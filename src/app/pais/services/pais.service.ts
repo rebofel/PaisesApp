@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaisREST } from '../interfaces/pais.interface';
@@ -37,6 +37,13 @@ export class PaisService {
       
       return this.http.get<PaisREST>(url); //retorna solo un pais no un arreglo
   
+    }
+
+    buscarRegion ( region: string ): Observable<PaisREST[]>{
+      const params = new HttpParams().set( 'fields', 'name,capital,alpha2Code,flag,population' ) // Para darle los parametros a la url
+      //la respuesta es mas corta y mas rapida asi no traemos tanta info al pedo
+      const url = `${ this.apiUrl }/region/${region}`;
+      return this.http.get<PaisREST[]>( url, {params} ); // le paso la url + parametros 
     }
 
 }
